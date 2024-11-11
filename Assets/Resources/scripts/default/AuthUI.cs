@@ -21,10 +21,29 @@ public class AuthUI : MonoBehaviour
     void Start()
     {
         authManager = GetComponent<AuthManager>();
+
+        // 인풋 필드에 기본 텍스트 설정
+        usernameInput.text = "ID";
+        passwordInput.text = "PASSWORD";
+
+        // 버튼 이벤트 설정
         registerButton.onClick.AddListener(OnRegisterClick);
         loginButton.onClick.AddListener(OnLoginClick);
         logoutButton.onClick.AddListener(OnLogoutClick);
         GetDataButton.onClick.AddListener(OnGetDataClick);
+
+        // 인풋 필드 선택 시 초기화하는 이벤트 설정
+        usernameInput.onSelect.AddListener(delegate { OnInputFieldSelected(usernameInput, "ID"); });
+        passwordInput.onSelect.AddListener(delegate { OnInputFieldSelected(passwordInput, "PASSWORD"); });
+    }
+
+    private void OnInputFieldSelected(TMP_InputField inputField, string defaultText)
+    {
+        // 인풋 필드가 선택되었을 때, 텍스트가 기본값일 경우에만 지움
+        if (inputField.text == defaultText)
+        {
+            inputField.text = "";
+        }
     }
 
     private void OnLoginClick()
