@@ -1,61 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;  // TextMeshPro를 사용하려면 이 네임스페이스가 필요합니다.
 using UnityEngine.UI;
 
 public class GameView : MonoBehaviour
 {
+    // UI 요소들 (TextMeshProUGUI로 변경)
+    public TMP_Text playerNameText;    // TextMeshPro로 변경
+    public TMP_Text stageNameText;     // TextMeshPro로 변경
+    public TMP_Text stageDescriptionText; // TextMeshPro로 변경
+    public Image stageImage;
+    public TMP_Text explorationLogText; // TextMeshPro로 변경
+    public TMP_Text nextAreaText;      // TextMeshPro로 변경
+    public Slider progressSlider;
 
-    //UI 요소 선언
-    public Text playerNameText;
-    public Text metalText;
-    public Text crystalText;
-    public Text deuteriumText;
-    public InputField playerNameInput;
+    public Button exploreButton;
 
-    public Button registerButton;
-    public Button loginButton;
-    public Button collectButton;
-    public Button developButton;
-    public Slider progressBar;
-
-    //UI 업데이트 메서드
-    public void SetPlayerName(string name)
+    // UI 업데이트 메서드
+    public void UpdatePlayerInfo(string playerName, string stageName, Sprite stageSprite, string description, string logText, string nextArea, int currentStage)
     {
-        playerNameText.text = name;
+        playerNameText.text = playerName;
+        stageNameText.text = stageName;
+        stageDescriptionText.text = description;
+
+        // 단계에 맞는 이미지를 리소스 폴더에서 불러오기
+        string imagePath = "StageImages/Stage" + currentStage; // "StageImages"는 Resources 폴더 내에 저장된 폴더 이름
+        stageSprite = Resources.Load<Sprite>(imagePath); // 해당 경로에서 이미지 불러오기
+
+        // 이미지가 존재할 경우에만 설정
+        if (stageSprite != null)
+        {
+            stageImage.sprite = stageSprite;
+        }
+        else
+        {
+            Debug.LogWarning($"Stage image not found for stage {currentStage}");
+        }
+
+        explorationLogText.text = logText;
+        nextAreaText.text = nextArea;
     }
 
-    public void UpdateResources(int metal, int crystal, int deuterium)
+    public void SetProgress(float progress)
     {
-        metalText.text = $"Metal : {metal}";
-        crystalText.text = $"Crystal : {crystal}";
-        deuteriumText.text = $"Deuterium : {deuterium}";
+        progressSlider.value = progress;
     }
 
-    public void UpdateProgressBar(float value)
+    // 탐사 버튼 클릭 리스너 설정
+    public void SetExploreButtonListener(UnityEngine.Events.UnityAction action)
     {
-        progressBar.value = value;
-    }
-
-    //버튼 클릭 리스너 설정 메서드
-    public void SetRegisterButtonListener(UnityEngine.Events.UnityAction action)
-    {
-        registerButton.onClick.RemoveAllListeners();
-        registerButton.onClick.AddListener(action);
-    }
-    public void SetLoginButtonListener(UnityEngine.Events.UnityAction action)
-    {
-        loginButton.onClick.RemoveAllListeners();
-        loginButton.onClick.AddListener(action);
-    }
-    public void SetCollectButtonListener(UnityEngine.Events.UnityAction action)
-    {
-        collectButton.onClick.RemoveAllListeners();
-        collectButton.onClick.AddListener(action);
-    }
-    public void SetDevelopButtonListener(UnityEngine.Events.UnityAction action)
-    {
-        developButton.onClick.RemoveAllListeners();
-        developButton.onClick.AddListener(action);
+        exploreButton.onClick.AddListener(action);
     }
 }

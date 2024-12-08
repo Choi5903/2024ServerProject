@@ -33,7 +33,7 @@ public class AuthManager : MonoBehaviour
     private void SaveTokenToPrefs(string accessToken, string refreshToken, DateTime expiryTime)
     {
         PlayerPrefs.SetString(ACCESS_TOKEN_PREFS_KEY, accessToken);
-        PlayerPrefs.SetString(REFRESH_TOKEN_PREFS_KEY , refreshToken);
+        PlayerPrefs.SetString(REFRESH_TOKEN_PREFS_KEY, refreshToken);
         PlayerPrefs.SetString(TOKEN_EXPIRY_PREFS_KEY, expiryTime.Ticks.ToString());
         PlayerPrefs.Save();
 
@@ -59,14 +59,20 @@ public class AuthManager : MonoBehaviour
 
             if (www.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError($"Login Error : {www.error}");
+                Debug.LogError($"Login Error: {www.error}");
             }
             else
             {
-                var respone = JsonConvert.DeserializeObject<LoginResponse>(www.downloadHandler.text);
-                Debug.Log(respone);
-                SaveTokenToPrefs(respone.accessToken, respone.refreshToken, DateTime.UtcNow.AddMinutes(15));
-                Debug.Log("Login successful");
+                var response = JsonConvert.DeserializeObject<LoginResponse>(www.downloadHandler.text);
+                if (response == null)
+                {
+                    Debug.LogError("Invalid response data.");
+                }
+                else
+                {
+                    SaveTokenToPrefs(response.accessToken, response.refreshToken, DateTime.UtcNow.AddMinutes(15));
+                    Debug.Log("Login successful");
+                }
             }
         }
     }
@@ -108,7 +114,7 @@ public class AuthManager : MonoBehaviour
     //토큰 갱신 코루틴
     private IEnumerator RefreshToken()
     {
-        if(string.IsNullOrEmpty(refreshToken))
+        if (string.IsNullOrEmpty(refreshToken))
         {
             Debug.LogError("리프레시 토큰이 없으므로 다시 로그인한다.");
             yield break;
@@ -128,13 +134,13 @@ public class AuthManager : MonoBehaviour
 
             if (www.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError($"Registeration Error : {www.error}");
-                yield return Login("username", "password");     //실구현에서는 저장된 사용자 정보를 사용
+                Debug.LogError($"Token refresh error: {www.error}");
+                yield return Login("username", "password");  // 실제 사용자 정보를 사용
             }
             else
             {
                 var response = JsonConvert.DeserializeObject<RefreshTokenResponse>(www.downloadHandler.text);
-                SaveTokenToPrefs(response.accessToken, refreshToken, DateTime.UtcNow.AddMinutes(15));
+                SaveTokenToPrefs(response.accessToken, refreshToken, DateTime.UtcNow.AddMinutes(15)); // 새 accessToken 저장
                 Debug.Log("Token refreshed successfully");
             }
         }
@@ -142,6 +148,7 @@ public class AuthManager : MonoBehaviour
 
 
     //사용자 등록 코루틴
+    // 회원가입
     public IEnumerator Register(string username, string password)
     {
         var user = new { username, password };
@@ -158,14 +165,20 @@ public class AuthManager : MonoBehaviour
 
             if (www.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError($"Registeration Error : {www.error}");
+                Debug.LogError($"Login Error: {www.error}");
             }
             else
             {
-                var respone = JsonConvert.DeserializeObject<LoginResponse>(www.downloadHandler.text);
-                Debug.Log(respone);
-                SaveTokenToPrefs(respone.accessToken, respone.refreshToken, DateTime.UtcNow.AddMinutes(15));
-                Debug.Log("Registeration successful");
+                var response = JsonConvert.DeserializeObject<LoginResponse>(www.downloadHandler.text);
+                if (response == null)
+                {
+                    Debug.LogError("Invalid response data.");
+                }
+                else
+                {
+                    SaveTokenToPrefs(response.accessToken, response.refreshToken, DateTime.UtcNow.AddMinutes(15));
+                    Debug.Log("Login successful");
+                }
             }
         }
     }

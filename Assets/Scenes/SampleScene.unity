@@ -3413,7 +3413,6 @@ MonoBehaviour:
   registerButton: {fileID: 15348721}
   loginButton: {fileID: 1125314079}
   logoutButton: {fileID: 516441092}
-  GetDataButton: {fileID: 0}
   statusText: {fileID: 756433776}
 --- !u!4 &2096778773
 Transform:

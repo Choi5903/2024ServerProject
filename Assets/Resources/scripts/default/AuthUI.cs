@@ -6,15 +6,14 @@ using UnityEngine.UI;
 
 public class AuthUI : MonoBehaviour
 {
-    public TMP_InputField usernameInput; // TMP_InputField로 변경
-    public TMP_InputField passwordInput; // TMP_InputField로 변경
+    public TMP_InputField usernameInput;
+    public TMP_InputField passwordInput;
 
     public Button registerButton;
     public Button loginButton;
     public Button logoutButton;
-    public Button GetDataButton;
 
-    public TextMeshProUGUI statusText; // TextMeshProUGUI로 변경
+    public TextMeshProUGUI statusText;
 
     private AuthManager authManager;
 
@@ -30,7 +29,6 @@ public class AuthUI : MonoBehaviour
         registerButton.onClick.AddListener(OnRegisterClick);
         loginButton.onClick.AddListener(OnLoginClick);
         logoutButton.onClick.AddListener(OnLogoutClick);
-        GetDataButton.onClick.AddListener(OnGetDataClick);
 
         // 인풋 필드 선택 시 초기화하는 이벤트 설정
         usernameInput.onSelect.AddListener(delegate { OnInputFieldSelected(usernameInput, "ID"); });
@@ -80,17 +78,5 @@ public class AuthUI : MonoBehaviour
         statusText.text = "로그아웃 중...";
         yield return StartCoroutine(authManager.Logout());
         statusText.text = "로그아웃 성공";
-    }
-
-    private void OnGetDataClick()
-    {
-        StartCoroutine(GetDataCoroutine());
-    }
-
-    private IEnumerator GetDataCoroutine()
-    {
-        statusText.text = "데이터 요청 중...";
-        yield return StartCoroutine(authManager.GetProtectedData());
-        statusText.text = "데이터 요청 완료";
     }
 }
