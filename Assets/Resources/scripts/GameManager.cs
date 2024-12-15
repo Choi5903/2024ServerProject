@@ -17,9 +17,9 @@ public class GameManager : MonoBehaviour
     public ScrollRect explorationLogScrollRect; // 탐사 로그의 ScrollRect
     public ScrollRect situationReportScrollRect; // 상황 보고서의 ScrollRect
 
-
     private string baseUrl = "http://localhost:3000";
     private int loggedInUserId;  // 로그인 후 서버에서 받은 유저 ID
+    private string loggedInUsername; // 로그인 후 서버에서 받은 유저 이름 (CREW ID)
     private int currentLevel = 1;
     private string[] locations = {"Lv1.행성 궤도 진입", "Lv2.대기 진입", "Lv3.착륙 단계", "Lv4.지표면 탐색", "Lv5.토착 생물 조우", "Lv6.탐사 기지 구축",
         "Lv7.협곡 진입", "Lv8.동굴 진입", "Lv9.지하 생명체 무리 조우", "Lv10.식생 샘플 채취", "Lv11.벽화 발견", "Lv12.고대 외계 시설 발견",
@@ -33,10 +33,11 @@ public class GameManager : MonoBehaviour
         UpdateUI();
     }
 
-    public void SetLoggedInUserId(int userId)
+    public void SetLoggedInUserId(int userId, string username)
     {
         loggedInUserId = userId;
-        crewIdText.text = userId.ToString();  //유저의 아이디를 문자열화 시켜 보여줌.
+        loggedInUsername = username;
+        crewIdText.text = username; // CREW ID에 username 표시
         UpdateUI();
     }
 

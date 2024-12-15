@@ -56,7 +56,7 @@ public class AuthManager : MonoBehaviour
             // 서버 응답 처리
             string jsonResponse = request.downloadHandler.text;
             var response = JsonUtility.FromJson<ServerResponse>(jsonResponse);
-            resultText.text = response.success ? "회원가입 성공!" : "회원가입 실패: " + response.message;
+            resultText.text = response.success ? $"회원가입 성공! 생성된 아이디 {response.username} " : "회원가입 실패: " + response.message;
         }
         else
         {
@@ -94,7 +94,7 @@ public class AuthManager : MonoBehaviour
             resultText.text = response.success ? "로그인 성공!" : "로그인 실패: " + response.message;
             if (response.success)
             {
-                gameManager.SetLoggedInUserId(response.user.id);  // 로그인 시 받은 유저 ID 설정
+                gameManager.SetLoggedInUserId(response.user.id, response.user.username);  // 로그인 시 받은 유저 ID 설정
                 Debug.Log("로그인 유저 ID: " + response.user.id);
             }
         }
@@ -111,6 +111,7 @@ public class ServerResponse
 {
     public bool success;
     public string message;
+    public string username; // 생성된 아이디
     public User user;  // 로그인 성공 시 반환되는 유저 정보
 }
 

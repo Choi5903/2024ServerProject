@@ -38,7 +38,8 @@ app.post('/register', (req, res) => {
     const query = 'INSERT INTO users (username, password, level) VALUES (?, ?, 1)';
     db.query(query, [crewName, password], (err, result) => {
         if (err) return res.status(400).json({ success: false, message: '회원가입 실패!' }); // JSON 응답
-        res.json({ success: true, username: crewName, message: '회원가입 성공!' }); // JSON 응답
+        //생성된 아이디를 포함한 성공 메세지 
+        res.json({ success: true, username: crewName, message: `회원가입 성공! 생성된 아이디: ${crewName}` }); // JSON 응답
     });
 });
 
