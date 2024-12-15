@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro; // TMP 사용을 위해 추가
 using UnityEngine.Networking;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class GameManager : MonoBehaviour
     public TMP_Text nextAreaText;        // NEXT AREA 텍스트
     public TMP_Text riskLevelText;       // RISK LEVEL 텍스트
     public GameObject[] levelImages;     // 레벨 이미지 배열
+
+    public ScrollRect explorationLogScrollRect; // 탐사 로그의 ScrollRect
+    public ScrollRect situationReportScrollRect; // 상황 보고서의 ScrollRect
 
 
     private string baseUrl = "http://localhost:3000";
@@ -64,22 +68,17 @@ public class GameManager : MonoBehaviour
             string responseText = request.downloadHandler.text;
             Debug.Log("서버 응답: " + responseText);
 
-            // 서버 응답에 따라 성공/실패 메시지 처리 및 UI 업데이트
             if (responseText.Contains("탐사 성공"))
             {
                 currentLevel++;
-                explorationLogText.text += "\n탐사 성공! 레벨 " + currentLevel + "로 이동."; //어디로 이동했는지 찍어주는 로그 텍스트
-                situationReportText.text += "\n" + GetLocationName(currentLevel - 1) + " -> " + GetLocationName(currentLevel);
-                //Debug.Log("탐사 성공!");
-                //// 레벨 업데이트 (유저 레벨을 화면에 반영)
-                //UpdateUI(loggedInUserId);  // 서버에서 반환된 유저 레벨을 사용해 UI 업데이트
+                AddExplorationLog($"탐사 성공! 레벨 {currentLevel}로 이동.");
+                AddSituationReport($"{GetLocationName(currentLevel - 1)} -> {GetLocationName(currentLevel)}");
             }
             else
             {
                 currentLevel = 1;
-                explorationLogText.text += "\n탐사 실패! 레벨 초기화.";
-                situationReportText.text += "\n레벨 초기화. 다시 시작";
-                Debug.Log("탐사 실패");
+                AddExplorationLog("탐사 실패! 레벨 초기화.");
+                AddSituationReport("레벨 초기화. 다시 시작.");
             }
 
             UpdateUI();
@@ -128,7 +127,29 @@ public class GameManager : MonoBehaviour
         return riskLevels[(level - 1) % riskLevels.Length]; // 레벨에 따라 위험도 반환
     }
 
+    private void AddExplorationLog(string message)
+    {
+        explorationLogText.text += message + "\n";
 
+        // 텍스트 추가 후 Content 크기 강제 업데이트
+        LayoutRebuilder.ForceRebuildLayoutImmediate(explorationLogText.GetComponent<RectTransform>());
+
+        // 스크롤을 맨 아래로 이동
+        Canvas.ForceUpdateCanvases();
+        explorationLogScrollRect.verticalNormalizedPosition = 0f;
+    }
+
+    private void AddSituationReport(string message)
+    {
+        situationReportText.text += message + "\n";
+
+        // 텍스트 추가 후 Content 크기 강제 업데이트
+        LayoutRebuilder.ForceRebuildLayoutImmediate(situationReportText.GetComponent<RectTransform>());
+
+        // 스크롤을 맨 아래로 이동
+        Canvas.ForceUpdateCanvases();
+        situationReportScrollRect.verticalNormalizedPosition = 0f;
+    }
 
     // 서버에서 유저 레벨을 가져오는 코루틴
     //IEnumerator GetUserLevel(int userId)
@@ -158,5 +179,5 @@ public class GameManager : MonoBehaviour
     //    }
     //}
 
-       
+
 }
