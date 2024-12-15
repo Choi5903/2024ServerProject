@@ -2416,8 +2416,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 705515727}
   m_HandleRect: {fileID: 705515726}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.99893576
+  m_Value: -0.097432524
+  m_Size: 0.9605066
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3052,7 +3052,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uB85C\uADF8\uC778 \uC0C1\uD0DC"
+  m_text: "REGISTER :\uBE44\uBC00\uBC88\uD638\uB9CC \uC785\uB825 \uD6C4 \uD68C\uC6D0\uAC00\uC785
+    \uBC84\uD2BC\nLOGIN : \uC544\uC774\uB514\uC640 \uBE44\uBC00\uBC88\uD638 \uC785\uB825
+    \uD6C4 \uB85C\uADF8\uC778 \uBC84\uD2BC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: be4d4bd2835b9544d987e5fc353aaf53, type: 2}
   m_sharedMaterial: {fileID: 3204032988951341039, guid: be4d4bd2835b9544d987e5fc353aaf53, type: 2}
@@ -3698,7 +3700,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.09270272}
+  m_AnchoredPosition: {x: 0, y: 0.10173164}
   m_SizeDelta: {x: 0, y: 184.35}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &854090943
